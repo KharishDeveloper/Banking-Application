@@ -2,7 +2,8 @@ package com.banking;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Scanner;
+
+import com.properties.Constants;
 
 public class BankLogin {
 	public static String mail, pwd;
@@ -10,14 +11,10 @@ public class BankLogin {
 	public static LocalDateTime LoginTime;
 
 	public static void Login() throws SQLException {
-//		UserServiceLogic.Businesses();
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter your Email ID:");
-		mail = sc.next();
+		mail = Constants.sc.next();
 		System.out.println("Enter password :");
-		pwd = sc.next();
+		pwd = Constants.sc.next();
 
-//		BankLoginLogics.loginlogics();
-		// call costants one method
 	}
 }

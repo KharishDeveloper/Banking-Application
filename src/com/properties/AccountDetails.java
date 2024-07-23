@@ -35,7 +35,8 @@ public class AccountDetails {
 		System.out.println("Account opened date : " + AccountOpeningdate);
 		CIF = Constants.generation(9);
 		System.out.println("customer information file : " + CIF);
-		AccountDetailsDB.AccountDetails(Constants.GetConnection());
+//		AccountDetailsDB.AccountDetails(Constants.GetConnection());
+		AccountDetailsDB.SavingAccountDetails(Constants.GetConnection());
 
 	}
 
@@ -55,15 +56,15 @@ public class AccountDetails {
 			LocalDateTime LoginTime1 = LocalDateTime.now().withNano(0);
 			between = ChronoUnit.HOURS.between(time2, LoginTime1);
 			System.out.println(between);
-			if (Constants.FailedCount == 0) {
+			if (Constants.LocalFailedCount == 0) {
 				if (between >= 24) {
 					System.out.println("welcome back carefully enter");
-					Constants.FailedCount = 3;
-					System.out.println(Constants.FailedCount);
+					Constants.LocalFailedCount = 3;
+					System.out.println(Constants.LocalFailedCount);
 					Connection conn = Constants.GetConnection();
 					PreparedStatement stt = conn.prepareStatement(
 							"update login set failedcount=?,unblocktime=?,accountstatus=? where mail=?;");
-					stt.setInt(1, Constants.FailedCount);
+					stt.setInt(1, Constants.LocalFailedCount);
 					stt.setLong(2, between);
 					stt.setString(3, "UNBLOCK");
 					stt.setString(4, BankLogin.mail);
@@ -75,7 +76,7 @@ public class AccountDetails {
 					System.out.println(
 							"please wait " + (24 - between) + " hours then only you will allow to login into this");
 
-					String sql = "update login set failedcount=?,unblocktime=?,accountstatus=? where Mail=?;";
+//					String sql = "update login set failedcount=?,unblocktime=?,accountstatus=? where Mail=?;";
 
 					AccountDetailsDB.LoginStatusUpdation(c);
 

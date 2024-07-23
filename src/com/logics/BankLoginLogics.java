@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import com.DB.AccountDetailsDB;
 import com.DB.BankingServicesDB;
@@ -14,13 +13,12 @@ import com.properties.AccountDetails;
 import com.properties.Constants;
 
 public class BankLoginLogics {
-	static Scanner sc = new Scanner(System.in);
 
 	public static void loginlogics() throws SQLException {
 		BankLogin.Login();
 
 		
-		System.out.println("FC1 code based : " + Constants.FailedCount);
+//		System.out.println("F C 1 code based : " + Constants.LocalFailedCount);
 
 //		{
 		Connection con = Constants.GetConnection();
@@ -31,32 +29,34 @@ public class BankLoginLogics {
 		if (set.next()) {
 			System.out.println(set.getInt(1));
 		}
-		Constants.FailedCount = set.getInt(1);
-		System.out.println("FC2 DB based is : " + Constants.FailedCount);
+		Constants.LocalFailedCount = set.getInt(1);
+//		System.out.println("FC2 DB based is : " + Constants.LocalFailedCount);
 //		}
 		// verifying mail and password
-		if (Constants.FailedCount <= 3 && Constants.FailedCount >= 1) {
+		if (Constants.LocalFailedCount <= 3 && Constants.LocalFailedCount >= 1) {
 			Connection connection = Constants.GetConnection();
 			String sql2 = "select Mail, Password from usercreation where Mail=?;";
 			PreparedStatement stm = connection.prepareStatement(sql2);
 			stm.setString(1, BankLogin.mail);
 			ResultSet query = stm.executeQuery();
 			if (query.next()) {
-				System.out.println("mail :" + query.getString(1));
-				System.out.println("password :" + query.getString(2));
+//				System.out.println("mail :" + query.getString(1));
+//				System.out.println("password :" + query.getString(2));
 
 				if (query.getString(1).equals(BankLogin.mail) == true) {
 
-					System.out.println("mail matched ");
-					System.out.println("password phase");
+//					System.out.println("mail matched ");
+//					System.out.println("password phase");
 					if ((query.getString(2).equals(BankLogin.pwd)) == true) {
-						System.out.println("password matched ");
+//						System.out.println("password matched ");
 //						BankLogin.LoginTime = LocalDateTime.now().withNano(0);
 //						System.out.println(BankLogin.LoginTime);
 //						AccountDetailsDB.loginInsert(Constants.GetConnection());
-						AccountDetailsDB.LastLogin(Constants.GetConnection());
-						System.out.println("pin null started");
-						BankingServicesDB.PinNullInfo(Constants.GetConnection());
+//						AccountDetailsDB.LastLogin(Constants.GetConnection());
+						AccountDetailsDB.LastLoginUpdate(con);
+//						System.out.println("pin null started");
+//						BankingServicesDB.PinNullInfo(Constants.GetConnection());
+						BankingServicesDB.PinExistInfo(Constants.GetConnection());
 
 //						BankingServicesDB.SetPinDBLogic();
 
@@ -65,19 +65,19 @@ public class BankLoginLogics {
 					} else {
 
 						System.out.println("password not matched");
-						Constants.FailedCount--;
-						System.out.println("count password else block" + Constants.FailedCount);
+						Constants.LocalFailedCount--;
+//						System.out.println("count password else block" + Constants.LocalFailedCount);
 //						System.out.println("Enter your password again : ");
 //						BankLogin.pwd = sc.next();
 						Connection conn = Constants.GetConnection();
 						PreparedStatement stmtq = conn.prepareStatement("update login set failedcount=? where mail=?");
-						stmtq.setInt(1, Constants.FailedCount);
-						System.out.println("fc : " + Constants.FailedCount);
+						stmtq.setInt(1, Constants.LocalFailedCount);
+						System.out.println("fc : " + Constants.LocalFailedCount);
 						stmtq.setString(2, BankLogin.mail);
 						stmtq.executeUpdate();
 						System.out.println("Enter value :");
 						System.out.println("1. login \t 2. reset the password");
-						int value = sc.nextInt();
+						int value = Constants.sc.nextInt();
 						switch (value) {
 						case 1:
 							BankLoginLogics.loginlogics();
@@ -91,9 +91,9 @@ public class BankLoginLogics {
 				} else {
 					System.out.println("mail does not exist");
 					System.out.println("Enter your mail ID : ");
-					BankLogin.mail = sc.next();
-					Constants.FailedCount--;
-					System.out.println("count" + Constants.FailedCount);
+					BankLogin.mail = Constants.sc.next();
+					Constants.LocalFailedCount--;
+					System.out.println("count" + Constants.LocalFailedCount);
 //					i = 0;
 				}
 //
@@ -102,7 +102,7 @@ public class BankLoginLogics {
 			else {
 				System.out.println("unable to process");
 			}
-		} else if (Constants.FailedCount == 0) {
+		} else if (Constants.LocalFailedCount == 0) {
 			AccountDetails.failed();
 		}
 

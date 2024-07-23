@@ -7,13 +7,12 @@ import java.sql.SQLException;
 
 import com.banking.BankLogin;
 import com.banking.UserServiceCreation;
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
-import com.properties.Constants;
 import com.properties.AccountDetails;
+import com.properties.Constants;
 
 public class AccountDetailsDB {
 
-	public static Connection AccountDetails(Connection con) throws SQLException {
+	public static Connection SavingAccountDetails(Connection con) throws SQLException {
 		String sql = "insert into accountdetails(Mail,AccountNumber,Branch, Openeddate,CIF) values(?,?,?,curdate(),?)";
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1, UserServiceCreation.mail);
@@ -26,7 +25,7 @@ public class AccountDetailsDB {
 		return con;
 	}
 
-	public static void loginInsert(Connection con) throws SQLException {
+	public static void InsertLoginDetails(Connection con) throws SQLException {
 		String sql = "insert into login(Mail,logintime) values(?,now());";
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1, UserServiceCreation.mail);
@@ -39,12 +38,12 @@ public class AccountDetailsDB {
 		PreparedStatement stt = con.prepareStatement(sql1);
 		stt.setString(1, "BLOCK");
 		stt.setLong(2, AccountDetails.between);
-		stt.setInt(3, Constants.FailedCount);
+		stt.setInt(3, Constants.LocalFailedCount);
 		stt.setString(4, BankLogin.mail);
 		stt.executeUpdate();
 	}
 
-	public static void LastLogin(Connection con) throws SQLException {
+	public static void LastLoginUpdate(Connection con) throws SQLException {
 //		Connection con = Constants.GetConnection();
 		String sql = "update login set activestate=? where Mail=?;";
 		PreparedStatement stt1 = con.prepareStatement(sql);
@@ -58,21 +57,21 @@ public class AccountDetailsDB {
 		stmt.setString(1, BankLogin.mail);
 		ResultSet query = stmt.executeQuery();
 		if (query.next()) {
-			ResultSetMetaData md = (ResultSetMetaData) query.getMetaData();
-			System.out.println("1 col name :" + md.getColumnName(1));
-			System.out.println("in 1 " + query.getString(1));
-			System.out.println("2 col name :" + md.getColumnName(2));
-			System.out.println("in 2 " + query.getString(2));// last login
-			System.out.println("3 col name :" + md.getColumnName(3));
-			System.out.println("in 3 " + query.getString(3));
+//			ResultSetMetaData md = (ResultSetMetaData) query.getMetaData();
+//			System.out.println("1 col name :" + md.getColumnName(1));
+//			System.out.println("in 1 " + query.getString(1));
+//			System.out.println("2 col name :" + md.getColumnName(2));
+//			System.out.println("in 2 " + query.getString(2));// last login
+//			System.out.println("3 col name :" + md.getColumnName(3));
+//			System.out.println("in 3 " + query.getString(3));
 
 			if (query.getString(3).equals("login")) {
 				System.out.println("your last login :" + query.getString(1));
-				System.out.println("value addressed");
+//				System.out.println("value addressed");
 				String url = "update login set logintime=now(),lastlogin=?,failedcount=? where Mail=?;";
 				PreparedStatement stt = con.prepareStatement(url);
 				stt.setString(1, query.getString(1));
-				stt.setInt(2, Constants.FailedCount);
+				stt.setInt(2, Constants.LocalFailedCount);
 				stt.setString(3, BankLogin.mail);
 				System.out.println("updated");
 				int update = stt.executeUpdate();

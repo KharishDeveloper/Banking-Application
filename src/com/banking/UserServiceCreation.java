@@ -1,7 +1,9 @@
 package com.banking;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Scanner;
+
+import com.properties.Constants;
 
 public class UserServiceCreation {
 
@@ -9,33 +11,27 @@ public class UserServiceCreation {
 	public static byte age;
 	public static int checkerValueCap = 0;
 	public static int checkerValueSmall = 0;
-//	public static int Deposit;
 
-	public static void AccountCreation() {
+	public static void AccountCreation() throws SQLException {
 
-		Scanner sc = new Scanner(System.in);
-
-		System.out.println("WELCOME TO OUR BANKING SERVICES");
+		System.out.println("WELCOME TO NATIONAL BANKING SERVICES");
 		System.out.println("Enter your first name :");
-		FirstName = sc.nextLine();
+		FirstName = Constants.sc.next();
 		System.out.println("Enter your last name :");
-		LastName = sc.nextLine();
+		LastName = Constants.sc.next();
 		System.out.println("Enter your username :");
-		userName = sc.nextLine();
-//		String FullName = FirstName + LastName;
+		userName = Constants.sc.next();
 		System.out.println("Enter your Date-Of-Birth :[YYYY-MM-DD]");
-		DOB = sc.next();
+		DOB = Constants.sc.next();
 		LocalDate.parse(DOB);
 		System.out.println("Enter your mail address :");
-		mail = sc.next();
+		mail = Constants.sc.next();
 		System.out.println("Enter your age :");
-		age = sc.nextByte();
+		age = Constants.sc.nextByte();
 		System.out.println("Enter mobile number");
-		mobileNumber = sc.next();
+		mobileNumber = Constants.sc.next();
 		System.out.println("Enter password :");
-		password = sc.next();
-//		System.out.println("It is mandatory to deposit some amount for security purpose .");
-//		Deposit = sc.nextInt();
+		password = Constants.sc.next();
 
 	}
 

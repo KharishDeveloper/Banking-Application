@@ -13,7 +13,7 @@ import com.banking.BankLogin;
 
 public class Constants {
 
-	public static int FailedCount;
+	public static int LocalFailedCount;
 	public static String url = "jdbc:mysql://localhost:3306/banking";
 	public static String username = "root";
 	public static String password = "Harish@123";
@@ -43,7 +43,7 @@ public class Constants {
 			return sb.toString();
 		};
 		String gen = su.get();
-		System.out.println("generated :"+gen);
+		System.out.println("generated data :"+gen);
 		return gen;
 	}
 
@@ -56,8 +56,8 @@ public class Constants {
 		if (set.next()) {
 			System.out.println(set.getInt(1));
 		}
-		FailedCount = set.getInt(1);
-		System.out.println("FC is : " + FailedCount);
+		LocalFailedCount = set.getInt(1);
+		System.out.println("FC is : " + LocalFailedCount);
 	}
 
 //	public static String TransactionIDGenerator() {

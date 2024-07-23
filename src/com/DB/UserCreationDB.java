@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import com.banking.UserServiceCreation;
 import com.properties.Constants;
@@ -30,18 +29,18 @@ public class UserCreationDB {
 
 	}
 
-	public static void UserNameChecking(Connection con) throws SQLException {
-		Scanner sc = new Scanner(System.in);
+	public static void UserNameDataExist(Connection con) throws SQLException {
 		String sql = "select UserName from usercreation where UserName=?;";
-		PreparedStatement stm1 = Constants.GetConnection().prepareStatement(sql);
+		PreparedStatement stm1 = con.prepareStatement(sql);
 		stm1.setString(1, UserServiceCreation.userName);
 		ResultSet query = stm1.executeQuery();
 		while (query.next()) {
-			while (query.getString(1).equals(UserServiceCreation.userName)) {
+			while (query.getString(1).equalsIgnoreCase(UserServiceCreation.userName)) {
+//				 && UserServiceCreation.userName.length()>=5
 				System.out.println("inside while");
 				System.out.println("you have to choose any other username for security purpose");
-				UserServiceCreation.userName = sc.next();
-				UserNameChecking(con);
+				UserServiceCreation.userName = Constants.sc.next();
+				UserNameDataExist(con);
 			}
 		}
 		System.out.println("your username verification was perfecctly done");
@@ -53,11 +52,25 @@ public class UserCreationDB {
 		st.setString(1, mailid);
 		ResultSet query = st.executeQuery();
 		if (query.next()) {
-			System.out.println(query.getString(1));
-		} else {
-			System.out.println("no username !");
+			return query.getString(1);
 		}
-		return query.getString(1);
+//			else {
+//			System.out.println("no username !");
+//		}
+//		return query.getString(1);
+		return "no username exist";
+	}
+	
+	
+	public static String MailCheck(Connection con, String mail) throws SQLException{
+		String sql="select mail from usercreation where mail=?;";
+		PreparedStatement statement = con.prepareStatement(sql);
+		statement.setString(1, UserServiceCreation.mail);
+		ResultSet execute = statement.executeQuery();
+		if(execute.next()) {
+			return "already exist";
+		}
+		return "new mail";
 	}
 
 }
