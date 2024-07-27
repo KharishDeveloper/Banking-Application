@@ -30,7 +30,7 @@ public class Constants {
 	public static String generation(int GeneratedLength) {
 		Supplier<String> su = () -> {
 
-			System.out.println("random class");
+//			System.out.println("random class");
 			String data = "1234567895";
 			Random ran = new Random();
 			StringBuilder sb = new StringBuilder();

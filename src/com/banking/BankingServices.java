@@ -163,7 +163,7 @@ public class BankingServices {
 		TransactionHistoryDB.GetUserDetails(Constants.GetConnection());
 
 		System.out.println("----------------------------");
-		TransactionHistoryDB.GetTransactionHistory(Constants.GetConnection(), 2);
+		TransactionHistoryDB.GetTransactionHistory(Constants.GetConnection());
 
 	}
 

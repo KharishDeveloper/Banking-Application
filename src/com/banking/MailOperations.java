@@ -1,19 +1,23 @@
 package com.banking;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
+import com.DB.MailOperationsDB;
 import com.properties.Constants;
+import com.properties.Details;
 
 public class MailOperations {
 
-	public static void ForgotPassword() {
+	public static void ForgotPassword() throws SQLException {
 		System.out.println("Enter your mail ID : ");
 		String mail = Constants.sc.next();
 		System.out.println("Enter your date of birth : ");
-		String DOB = Constants.sc.next();
-		LocalDate.parse(DOB);
-		if (DOB.equals(UserServiceCreation.DOB)) {
+		String Date = Constants.sc.next();
+		LocalDate.parse(Date);
+		boolean forgotPWD = MailOperationsDB.ForgotpasswordDOB(Constants.GetConnection(), mail, Date);
 
+		if (forgotPWD) {
 			System.out.println("you received an OTP within 1 to 2 minutes");
 			String generation = Constants.generation(4);
 			System.out.println("Enter your OTP :");
@@ -24,28 +28,23 @@ public class MailOperations {
 				String NewPassword = Constants.sc.next();
 				System.out.println("re enter your new password :");
 				String ConfirmPassword = Constants.sc.next();
+				boolean pwdVerify = MailOperationsDB.PasswordRetrieve(Constants.GetConnection(), mail, NewPassword);
 				if (NewPassword.equals(ConfirmPassword)) {
-					System.out.println("successfully updated your password");
+					if (pwdVerify) {
+						System.out.println("you entered ur old password !!!");
+						Details.LoginDetails();
+					}
+					int passwordValue = MailOperationsDB.UpdatePassword(Constants.GetConnection(), mail, NewPassword);
+					if (passwordValue == 1) {
+
+						System.out.println("successfully updated your password");
+					}
 				} else {
 					System.out.println("mismatched your passwords");
+					Details.LoginDetails();
 				}
 			}
 			System.out.println(OTP);
-			// write a logic for OTP verification
-			// if true
-//			{
-//				System.out.println("OTP verification successfully done");
-//				System.out.println("Enter the new password :");
-//				String NewPassword = Constants.sc.next();
-//				System.out.println("re enter your new password :");
-//				String ConfirmPassword = Constants.sc.next();
-//				if (NewPassword.equals(ConfirmPassword)) {
-//					System.out.println("successfully updated your password");
-//				} else {
-//					System.out.println("mismatched your passwords");
-//				}
-//			}
-
 		}
 
 	}
@@ -63,10 +62,6 @@ public class MailOperations {
 			System.out.println("mail not verified");
 			return false;
 		}
-//		 write a logic for OTP verification
-//		if true
-//		System.out.println("OTP verification successfully done");
-//		successfully verified your mail
 
 	}
 }

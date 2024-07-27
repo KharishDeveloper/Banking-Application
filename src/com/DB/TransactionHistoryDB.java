@@ -13,7 +13,7 @@ public class TransactionHistoryDB {
 	public static void GetUserDetails(Connection con) throws SQLException {
 		String sql = "select Mail,AccountNumber,Branch,CIF,OpenedDate from accountdetails where Mail=?;";
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, "hari@gmail.com");
+		stmt.setString(1, BankLogin.mail);
 		ResultSetMetaData rsmd = stmt.getMetaData();
 		int count = rsmd.getColumnCount();
 		ResultSet set = stmt.executeQuery();
@@ -24,7 +24,7 @@ public class TransactionHistoryDB {
 		}
 	}
 
-	public static void GetTransactionHistory(Connection con, int limit) throws SQLException {
+	public static void GetTransactionHistory(Connection con) throws SQLException {
 		String sql = "select * from transactionhistory where mail=?;";
 		// mail,Date_Time,transactionID,amount,typeoftransaction,status,AnotherUseridTransfer
 		// Debit,credit

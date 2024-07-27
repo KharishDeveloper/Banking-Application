@@ -21,13 +21,7 @@ public class UserServiceLogic {
 		}
 
 		if (value.equalsIgnoreCase("new mail")) {
-//			BankLoginLogics.loginlogics();
 
-//		}
-
-//		Scanner sc = new Scanner(System.in);
-
-//		else {
 			// userName validation
 			while (UserServiceCreation.userName.contains(" ")) {
 				System.out.println("space exist");
@@ -35,10 +29,6 @@ public class UserServiceLogic {
 			}
 			UserCreationDB.UserNameDataExist(Constants.GetConnection());
 			// userName be unique
-
-//		System.out.println(UserServiceCreation.mail.contains("@"));
-//		System.out.println("mail logic o/p : "+((UserServiceCreation.mail.contains("@") && ((UserServiceCreation.mail.contains(".com"))
-//				|| (UserServiceCreation.mail.contains(".in"))==true))));
 
 			// mail validation
 			while ((UserServiceCreation.mail.contains("@") && (UserServiceCreation.mail.contains(".com"))) == false) {
