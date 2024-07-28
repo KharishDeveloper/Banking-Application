@@ -2,6 +2,7 @@ package com.banking;
 
 import java.sql.SQLException;
 
+import com.DB.AccountDetailsDB;
 import com.DB.BankingServicesDB;
 import com.DB.TransactionHistoryDB;
 import com.DB.UserCreationDB;
@@ -55,13 +56,13 @@ public class BankingServices {
 
 		BankingServices.Pin = Constants.sc.next();
 
-		TransactionID = Constants.generation(10);
 //		System.out.println(TransactionID + "Deposit ID");
 //		System.out.println("pin from deposit " + BankingServices.Pin);
 //		System.out.println("deposit db query");
 //		BankingServicesDB.PinChecking(Constants.GetConnection(), BankingServices.Pin); // checks pin is valid or not
 		boolean pinValidation = BankingServicesDB.PinValidation(Constants.GetConnection(), BankingServices.Pin);
 		if (pinValidation == true) {
+			TransactionID = Constants.generation(10);
 			BankingServicesDB.SavingDeposit(Constants.GetConnection());
 		}
 //		generating Transaction-ID
@@ -98,8 +99,11 @@ public class BankingServices {
 //			}
 //			isLoginUser = false;
 //		}
-		System.out.println("successfully logout the user !!!");
-		Details.LoginDetails();
+		int logout = AccountDetailsDB.Logout(Constants.GetConnection());
+		if (logout == 1) {
+			System.out.println("successfully logout the user !!!");
+			Details.LoginDetails();
+		}
 	}
 //	retrieving data from database -> pin, account balance
 
@@ -123,7 +127,7 @@ public class BankingServices {
 //		System.out.println("your balance at withdraw money state before performing withdraw:" + MoneyChecking);
 //		TransactionID = Constants.generation(10);//10 >5
 //		System.out.println(TransactionID + "withdraw ID");
-		if (MoneyChecking > Withdrawmoney ) {
+		if (MoneyChecking > Withdrawmoney) {
 //			&& MoneyChecking > -1
 			System.out.println("proceed with withdraw !");
 			BankingServicesDB.WithDrawMoney(Constants.GetConnection());

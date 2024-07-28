@@ -39,7 +39,7 @@ public class UserServiceLogic {
 //			if ((UserServiceCreation.mail.contains("@")) && (UserServiceCreation.mail.contains(".com")) == true) {
 //				System.out.println("@ phase checking");
 //				i = 0;
-////			UserServiceCreation.mail=sc.next();
+//			UserServiceCreation.mail=sc.next();
 //				System.out.println("exist");
 //			}
 //			else {

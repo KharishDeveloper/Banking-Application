@@ -47,7 +47,7 @@ public class AccountDetailsDB {
 //		Connection con = Constants.GetConnection();
 		String sql = "update login set activestate=? where Mail=?;";
 		PreparedStatement stt1 = con.prepareStatement(sql);
-		stt1.setString(1, "login");
+		stt1.setString(1, "Login");
 //		stt1.setInt(2, 3);
 		stt1.setString(2, BankLogin.mail);
 		int up = stt1.executeUpdate();
@@ -83,6 +83,21 @@ public class AccountDetailsDB {
 		} else {
 			System.out.println("no data");
 		}
+	}
+	
+	
+	
+	public static int Logout(Connection con) throws SQLException{
+		String sql="update login set activestate=? where Mail=?;";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1, "Logout");
+		stmt.setString(2, BankLogin.mail);
+		int set = stmt.executeUpdate();
+		if(set==1) {
+			return 1;
+		}
+		return -1;
+		
 	}
 
 	// userName unique logic
