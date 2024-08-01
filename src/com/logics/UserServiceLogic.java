@@ -12,15 +12,15 @@ import com.properties.Constants;
 public class UserServiceLogic {
 	public static void Businesses() throws SQLException {
 		UserServiceCreation.AccountCreation();
-		String value = UserCreationDB.MailCheck(Constants.GetConnection(), UserServiceCreation.mail);
-		if (value.equals("exist")) {
+		String value = UserCreationDB.MailCheck(Constants.GetConnection());
+		if (value.contains("exist")) {
 			System.out.println("account status : account exist");
 		} else {
 			System.out.println("account status : account does not exist");
 
 		}
 
-		if (value.equalsIgnoreCase("new mail")) {
+		if (value.contains("new")) {
 
 			// userName validation
 			while (UserServiceCreation.userName.contains(" ")) {

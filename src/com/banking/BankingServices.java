@@ -60,8 +60,8 @@ public class BankingServices {
 //		System.out.println("pin from deposit " + BankingServices.Pin);
 //		System.out.println("deposit db query");
 //		BankingServicesDB.PinChecking(Constants.GetConnection(), BankingServices.Pin); // checks pin is valid or not
-		boolean pinValidation = BankingServicesDB.PinValidation(Constants.GetConnection(), BankingServices.Pin);
-		if (pinValidation == true) {
+		String pinValidation = BankingServicesDB.PinValidation(Constants.GetConnection(), BankingServices.Pin);
+		if (pinValidation.equals("successfull")) {
 			TransactionID = Constants.generation(10);
 			BankingServicesDB.SavingDeposit(Constants.GetConnection());
 		}
@@ -80,8 +80,8 @@ public class BankingServices {
 		BankingServices.Pin = Constants.sc.next();
 		// checking pin
 //		BankingServicesDB.PinChecking(Constants.GetConnection(), BankingServices.Pin);
-		boolean pinValidation = BankingServicesDB.PinValidation(Constants.GetConnection(), BankingServices.Pin);
-		if (pinValidation == true) {
+		String pinValidation = BankingServicesDB.PinValidation(Constants.GetConnection(), BankingServices.Pin);
+		if (pinValidation.equalsIgnoreCase("successfull")) {
 
 			BankingServicesDB.DisplayingAccountBalanceDB(Constants.GetConnection(), BankLogin.mail);
 		}
@@ -113,7 +113,7 @@ public class BankingServices {
 		Withdrawmoney = Constants.sc.nextInt();
 
 		while ((Withdrawmoney >= Constants.MinAmountDepsoit && Withdrawmoney <= Constants.MaxAmountDepsoit) == false) {
-			System.out.println("amount will be in between only " + Constants.MinAmountDepsoit + "and"
+			System.out.println("amount will be in between only " + Constants.MinAmountDepsoit + " and"
 					+ Constants.MaxAmountDepsoit);
 			System.out.println("please enter amount : ");
 			Withdrawmoney = Constants.sc.nextInt();
@@ -122,17 +122,27 @@ public class BankingServices {
 
 		System.out.println("Enter pin : ");
 		BankingServices.Pin = Constants.sc.next();
+		
+		String pinValidation = BankingServicesDB.PinValidation(Constants.GetConnection(), BankingServices.Pin);
 //		int MoneyChecking = BankingServicesDB.WithdrawMoneyChecking(Constants.GetConnection(), BankingServices.Pin);
-		int MoneyChecking = BankingServicesDB.UserPinValidation(Constants.GetConnection(), BankingServices.Pin);
+		if(pinValidation.equals("successfull")) {
+		int MoneyChecking = BankingServicesDB.BankBalanceCheck(Constants.GetConnection());//return bank balance
 //		System.out.println("your balance at withdraw money state before performing withdraw:" + MoneyChecking);
 //		TransactionID = Constants.generation(10);//10 >5
 //		System.out.println(TransactionID + "withdraw ID");
-		if (MoneyChecking > Withdrawmoney) {
-//			&& MoneyChecking > -1
-			System.out.println("proceed with withdraw !");
-			BankingServicesDB.WithDrawMoney(Constants.GetConnection());
-		} else {
+		if(MoneyChecking!=-1) {
+		if (!(MoneyChecking > Withdrawmoney)) {
 			System.out.println("not maintaining enough balance !");
+//			&& MoneyChecking > -1
+		} else {
+			System.out.println("proceed with withdraw !");
+			TransactionID=Constants.generation(10);
+			BankingServicesDB.WithDrawMoney(Constants.GetConnection());
+		}
+		}
+		}
+		else {
+			System.out.println("pin mismatched !!!");
 		}
 //		Generate Transaction ID
 //		save it in a data base

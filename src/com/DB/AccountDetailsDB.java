@@ -65,7 +65,7 @@ public class AccountDetailsDB {
 //			System.out.println("3 col name :" + md.getColumnName(3));
 //			System.out.println("in 3 " + query.getString(3));
 
-			if (query.getString(3).equals("login")) {
+			if (query.getString(3).equals("Login")) {
 				System.out.println("your last login :" + query.getString(1));
 //				System.out.println("value addressed");
 				String url = "update login set logintime=now(),lastlogin=?,failedcount=? where Mail=?;";

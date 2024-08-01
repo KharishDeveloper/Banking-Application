@@ -62,7 +62,7 @@ public class UserCreationDB {
 	}
 	
 	
-	public static String MailCheck(Connection con, String mail) throws SQLException{
+	public static String MailCheck(Connection con) throws SQLException{
 		String sql="select mail from usercreation where mail=?;";
 		PreparedStatement statement = con.prepareStatement(sql);
 		statement.setString(1, UserServiceCreation.mail);
